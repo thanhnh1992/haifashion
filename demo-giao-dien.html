@@ -1,0 +1,826 @@
+<title>HAI Fashion Homepage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300&family=Lora:ital,wght@1,400;1,500&display=swap">
+
+<style>
+/* ============================================================
+   HAI FASHION — bản dựng giao diện
+   Hướng thiết kế: "Chalk & Cloth" — phấn thợ may trên mặt vải.
+   Nền trung tính lạnh, kẻ chỉ mảnh như vạch phấn, màu duy nhất
+   là màu lót áo (lining teal) — dùng rất ít, đúng tinh thần
+   "màu nằm ở mặt trong".
+   ============================================================ */
+
+:root{
+  --ground:#F3F3F1;
+  --surface:#FFFFFF;
+  --surface-2:#E9E9E6;
+  --ink:#16181A;
+  --ink-soft:#55595C;
+  --ink-muted:#8B8F92;
+  --line:#D8D9D5;
+  --line-strong:#B9BBB6;
+  --accent:#14524E;
+  --accent-quiet:#5E8B87;
+  --flag:#8A5A12;
+  --flag-bg:#F2E9D8;
+
+  --f-display:"Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  --f-quote:"Lora", Georgia, serif;
+
+  --wrap:1280px;
+  --pad:20px;
+  --sect:64px;
+  --radius:2px;
+}
+
+@media (min-width:768px){ :root{ --pad:32px; --sect:88px; } }
+@media (min-width:1100px){ :root{ --pad:48px; --sect:120px; } }
+
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0F1113;
+    --surface:#16191B;
+    --surface-2:#1E2224;
+    --ink:#EDEDEA;
+    --ink-soft:#A8ACAD;
+    --ink-muted:#71767A;
+    --line:#282C2E;
+    --line-strong:#3A3F42;
+    --accent:#4FA39B;
+    --accent-quiet:#356F6A;
+    --flag:#D9B372;
+    --flag-bg:#241E12;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0F1113;
+  --surface:#16191B;
+  --surface-2:#1E2224;
+  --ink:#EDEDEA;
+  --ink-soft:#A8ACAD;
+  --ink-muted:#71767A;
+  --line:#282C2E;
+  --line-strong:#3A3F42;
+  --accent:#4FA39B;
+  --accent-quiet:#356F6A;
+  --flag:#D9B372;
+  --flag-bg:#241E12;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-weight:400;
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+img{max-width:100%;display:block}
+
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+.wrap-wide{max-width:1440px;margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+
+section{padding-top:var(--sect);padding-bottom:var(--sect)}
+section.tight{padding-top:calc(var(--sect) * .6);padding-bottom:calc(var(--sect) * .6)}
+
+/* ---------- type ---------- */
+h1,h2,h3{margin:0;text-wrap:balance;font-family:var(--f-display)}
+
+h1{
+  font-weight:200;
+  font-size:clamp(34px,8.2vw,74px);
+  line-height:1.04;
+  letter-spacing:-0.025em;
+}
+h2{
+  font-weight:250;
+  font-size:clamp(26px,4.6vw,44px);
+  line-height:1.1;
+  letter-spacing:-0.02em;
+}
+h3{
+  font-weight:500;
+  font-size:clamp(17px,2.2vw,20px);
+  line-height:1.3;
+  letter-spacing:-0.005em;
+}
+p{margin:0}
+.lede{font-size:clamp(17px,2.2vw,19px);line-height:1.6;color:var(--ink-soft);max-width:56ch}
+.body{color:var(--ink-soft);max-width:64ch}
+.small{font-size:14px;line-height:1.55;color:var(--ink-muted)}
+
+.eyebrow{
+  font-size:11.5px;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--accent);
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--line);max-width:120px}
+
+.num{
+  font-variant-numeric:tabular-nums;
+  font-weight:300;
+  font-size:13px;
+  letter-spacing:.06em;
+  color:var(--accent);
+}
+
+/* ---------- chalk rule ---------- */
+.rule{height:1px;background:var(--line);border:0;margin:0}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:52px;padding:0 30px;
+  font-family:var(--f-body);font-size:15px;font-weight:500;letter-spacing:.01em;
+  border-radius:var(--radius);text-decoration:none;
+  transition:background .2s ease,color .2s ease,border-color .2s ease;
+  cursor:pointer;
+}
+.btn-primary{background:var(--ink);color:var(--ground);border:1px solid var(--ink)}
+.btn-primary:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line-strong)}
+.btn-ghost:hover{border-color:var(--ink)}
+.btn-on-dark{background:#F3F3F1;color:#16181A;border:1px solid #F3F3F1}
+.btn-on-dark:hover{background:transparent;color:#F3F3F1}
+.btn-ghost-on-dark{background:transparent;color:#F3F3F1;border:1px solid rgba(243,243,241,.4)}
+.btn-ghost-on-dark:hover{border-color:#F3F3F1}
+
+.link{
+  display:inline-flex;align-items:center;gap:9px;
+  font-size:14.5px;font-weight:500;color:var(--ink);text-decoration:none;
+  padding:6px 0;border-bottom:1px solid var(--line-strong);
+  transition:color .2s ease,border-color .2s ease;
+}
+.link:hover{color:var(--accent);border-color:var(--accent)}
+.link span{transition:transform .25s ease}
+.link:hover span{transform:translateX(4px)}
+
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ---------- khung ảnh cần chụp ---------- */
+.shot{
+  position:relative;
+  background:var(--surface-2);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+}
+.shot::before{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(-45deg,
+    transparent 0 11px,
+    color-mix(in srgb, var(--line-strong) 45%, transparent) 11px 12px);
+  opacity:.55;
+}
+.shot-label{
+  position:relative;text-align:center;max-width:26ch;
+  font-size:11.5px;line-height:1.5;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:500;color:var(--ink-muted);
+}
+.shot-label b{display:block;font-weight:600;color:var(--ink-soft);letter-spacing:.14em;margin-bottom:6px}
+.shot-4x5{aspect-ratio:4/5}
+.shot-3x4{aspect-ratio:3/4}
+.shot-1x1{aspect-ratio:1/1}
+.shot-3x2{aspect-ratio:3/2}
+.shot-hero{aspect-ratio:4/5}
+@media (min-width:768px){ .shot-hero{aspect-ratio:16/9} }
+
+/* ---------- cờ TODO ---------- */
+.todo{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--flag-bg);color:var(--flag);
+  font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:5px 10px;border-radius:var(--radius);
+  white-space:nowrap;
+}
+
+/* ---------- thanh ghi chú bản dựng ---------- */
+.protobar{
+  background:var(--ink);color:var(--ground);
+  font-size:13px;line-height:1.5;
+  padding:11px 0;
+}
+.protobar .wrap{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.protobar strong{font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:11px;white-space:nowrap;padding-top:1px}
+.protobar span{color:#B9BBB6;max-width:75ch}
+
+/* ---------- header ---------- */
+.hdr{
+  position:sticky;top:0;z-index:50;
+  background:color-mix(in srgb, var(--ground) 88%, transparent);
+  backdrop-filter:saturate(150%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.hdr-in{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+@media (min-width:1024px){ .hdr-in{height:76px} }
+
+.brand{
+  font-family:var(--f-display);font-weight:500;
+  font-size:15px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ink);text-decoration:none;white-space:nowrap;
+}
+.brand small{display:block;font-size:8.5px;letter-spacing:.2em;color:var(--ink-muted);font-weight:400;margin-top:2px}
+
+.nav{display:none;gap:30px;align-items:center}
+@media (min-width:1024px){ .nav{display:flex} }
+.nav a{
+  font-size:14px;font-weight:400;color:var(--ink-soft);text-decoration:none;
+  padding:6px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s;
+}
+.nav a:hover{color:var(--ink);border-color:var(--ink)}
+
+.hdr-cta{display:none}
+@media (min-width:1024px){ .hdr-cta{display:inline-flex;min-height:42px;padding:0 22px;font-size:14px} }
+
+.burger{
+  display:inline-flex;align-items:center;gap:9px;
+  background:none;border:1px solid var(--line-strong);border-radius:var(--radius);
+  color:var(--ink);font-family:var(--f-body);font-size:13px;font-weight:500;
+  min-height:42px;padding:0 14px;cursor:pointer;
+}
+@media (min-width:1024px){ .burger{display:none} }
+.burger-ic{display:flex;flex-direction:column;gap:4px;width:15px}
+.burger-ic i{display:block;height:1px;background:var(--ink)}
+
+.sheet{
+  position:fixed;inset:0;z-index:60;background:var(--ground);
+  display:flex;flex-direction:column;
+  transform:translateY(-100%);transition:transform .32s cubic-bezier(.4,0,.2,1);
+}
+.sheet[data-open="true"]{transform:translateY(0)}
+.sheet-top{display:flex;align-items:center;justify-content:space-between;height:64px;border-bottom:1px solid var(--line)}
+.sheet-close{background:none;border:1px solid var(--line-strong);border-radius:var(--radius);color:var(--ink);font-family:var(--f-body);font-size:13px;min-height:42px;padding:0 16px;cursor:pointer}
+.sheet-nav{display:flex;flex-direction:column;padding-top:14px}
+.sheet-nav a{
+  font-family:var(--f-display);font-weight:300;font-size:26px;letter-spacing:-.01em;
+  color:var(--ink);text-decoration:none;padding:16px 0;border-bottom:1px solid var(--line);
+}
+.sheet-foot{margin-top:auto;padding:22px 0 34px;display:flex;flex-direction:column;gap:10px}
+
+/* ---------- hero ---------- */
+.hero{padding-top:26px}
+@media (min-width:768px){ .hero{padding-top:40px} }
+.hero-copy{padding-top:26px;display:flex;flex-direction:column;gap:22px;align-items:flex-start}
+@media (min-width:900px){
+  .hero-copy{
+    margin-top:-96px;position:relative;z-index:2;
+    background:var(--ground);padding:34px 40px 0 0;max-width:min(760px,72%);
+  }
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center;width:100%}
+.hero-actions .btn-primary{flex:1 1 100%}
+@media (min-width:520px){ .hero-actions .btn-primary{flex:0 0 auto} }
+
+.hero-dots{display:flex;gap:8px;align-items:center;padding-top:4px}
+.hero-dots i{display:block;width:22px;height:1px;background:var(--line-strong)}
+.hero-dots i.on{background:var(--accent);height:2px}
+
+/* ---------- lưới ---------- */
+.grid{display:grid;gap:24px}
+@media (min-width:768px){ .grid{gap:28px} }
+.g2{grid-template-columns:1fr}
+@media (min-width:768px){ .g2{grid-template-columns:1fr 1fr} }
+.g3{grid-template-columns:1fr}
+@media (min-width:820px){ .g3{grid-template-columns:repeat(3,1fr)} }
+.g4{grid-template-columns:1fr 1fr}
+@media (min-width:900px){ .g4{grid-template-columns:repeat(4,1fr)} }
+
+.head{display:flex;flex-direction:column;gap:16px;margin-bottom:38px;max-width:62ch}
+.head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:38px}
+.head-row .head{margin-bottom:0}
+
+/* ---------- card nhóm ---------- */
+.acard{display:flex;flex-direction:column;gap:16px;text-decoration:none;color:inherit;group:none}
+.acard .shot{transition:border-color .3s ease}
+.acard:hover .shot{border-color:var(--accent-quiet)}
+.acard-t{display:flex;flex-direction:column;gap:8px}
+.acard-en{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:500}
+
+/* ---------- why ---------- */
+.why{display:flex;flex-direction:column}
+.why-item{
+  display:grid;grid-template-columns:1fr;gap:8px;
+  padding:24px 0;border-top:1px solid var(--line);
+}
+@media (min-width:820px){
+  .why-item{grid-template-columns:minmax(0,26ch) minmax(0,1fr);gap:40px;padding:30px 0}
+}
+.why-item:last-child{border-bottom:1px solid var(--line)}
+
+/* ---------- khách hàng thật ---------- */
+.rail{
+  display:grid;grid-auto-flow:column;grid-auto-columns:78%;
+  gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding-bottom:14px;margin-left:calc(var(--pad) * -1);margin-right:calc(var(--pad) * -1);
+  padding-left:var(--pad);padding-right:var(--pad);
+  scrollbar-width:thin;
+}
+.rail > *{scroll-snap-align:start}
+@media (min-width:700px){ .rail{grid-auto-columns:40%} }
+@media (min-width:1100px){
+  .rail{grid-auto-flow:row;grid-template-columns:repeat(3,1fr);overflow:visible;
+        margin:0;padding-left:0;padding-right:0;gap:28px}
+}
+.ccard{display:flex;flex-direction:column;gap:13px}
+.ccard-meta{display:flex;flex-direction:column;gap:5px}
+.ccard-type{font-size:15px;font-weight:500;color:var(--ink)}
+.ccard-ctx{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:500}
+
+/* ---------- band tối ---------- */
+.band{background:#101315;color:#F3F3F1}
+.band h2,.band h3{color:#F3F3F1}
+.band .body,.band .lede{color:#A8ACAD}
+.band .eyebrow{color:#7FBDB6}
+.band .eyebrow::after{background:#2A2F31}
+.band .rule{background:#2A2F31}
+.band .num{color:#7FBDB6}
+.band .shot{background:#191D1F;border-color:#2A2F31}
+.band .shot-label{color:#71767A}
+.band .shot-label b{color:#A8ACAD}
+.band .step{border-color:#2A2F31}
+
+/* ---------- quy trình ---------- */
+.steps{display:grid;grid-template-columns:1fr;gap:0}
+@media (min-width:700px){ .steps{grid-template-columns:1fr 1fr} }
+@media (min-width:1100px){ .steps{grid-template-columns:repeat(4,1fr)} }
+.step{display:flex;gap:16px;align-items:baseline;padding:18px 0;border-top:1px solid var(--line)}
+@media (min-width:700px){ .step{padding:20px 24px 20px 0} }
+.step-name{font-size:15.5px;font-weight:400;color:inherit}
+
+/* ---------- portfolio ---------- */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+.tab{
+  font-family:var(--f-body);font-size:13.5px;font-weight:500;
+  padding:9px 18px;border:1px solid var(--line-strong);border-radius:var(--radius);
+  background:transparent;color:var(--ink-soft);cursor:pointer;transition:all .2s ease;
+}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+
+/* ---------- journal ---------- */
+.jcard{display:flex;flex-direction:column;gap:13px;text-decoration:none;color:inherit}
+.jcat{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.jcard h3{transition:color .2s ease}
+.jcard:hover h3{color:var(--accent)}
+
+/* ---------- CTA cuối ---------- */
+.close-in{display:flex;flex-direction:column;gap:26px;align-items:flex-start;max-width:60ch}
+.close-actions{display:flex;flex-wrap:wrap;gap:14px;width:100%}
+.close-actions .btn{flex:1 1 100%}
+@media (min-width:560px){ .close-actions .btn{flex:0 0 auto} }
+
+/* ---------- footer ---------- */
+.ft{border-top:1px solid var(--line);padding:52px 0 40px}
+.ft-grid{display:grid;grid-template-columns:1fr;gap:34px}
+@media (min-width:760px){ .ft-grid{grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:32px} }
+.ft-col{display:flex;flex-direction:column;gap:11px}
+.ft-col h4{margin:0;font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted)}
+.ft-col a{font-size:14.5px;color:var(--ink-soft);text-decoration:none}
+.ft-col a:hover{color:var(--accent)}
+.ft-bottom{margin-top:42px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  .sheet{transition:none}
+  *{scroll-behavior:auto !important}
+}
+</style>
+
+<div class="protobar">
+  <div class="wrap">
+    <strong>Bản dựng</strong>
+    <span>Đây là bản dựng giao diện để duyệt bố cục và hướng thiết kế — chưa phải website chạy thật. Các khung gạch chéo là chỗ đặt ảnh, ghi rõ cần chụp gì. Các ô <em>TODO</em> là dữ liệu chưa được HAI Fashion xác nhận, chưa được điền bừa.</span>
+  </div>
+</div>
+
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="#">HAI Fashion<small>Executive Tailoring</small></a>
+    <nav class="nav">
+      <a href="#nhom">Nữ</a>
+      <a href="#nhom">Nam</a>
+      <a href="#doanhnghiep">Doanh nghiệp</a>
+      <a href="#portfolio">Bộ sưu tập</a>
+      <a href="#tay-nghe">Tay nghề</a>
+      <a href="#journal">Journal</a>
+    </nav>
+    <a class="btn btn-primary hdr-cta" href="#lien-he">Đặt lịch</a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="sheet">
+      <span class="burger-ic" aria-hidden="true"><i></i><i></i><i></i></span> Menu
+    </button>
+  </div>
+</header>
+
+<div class="sheet" id="sheet" data-open="false" aria-hidden="true">
+  <div class="wrap sheet-top">
+    <span class="brand">HAI Fashion</span>
+    <button class="sheet-close" id="sheet-close">Đóng</button>
+  </div>
+  <div class="wrap sheet-nav">
+    <a href="#nhom">Nữ</a>
+    <a href="#nhom">Nam</a>
+    <a href="#doanhnghiep">Doanh nghiệp</a>
+    <a href="#portfolio">Bộ sưu tập</a>
+    <a href="#tay-nghe">Tay nghề</a>
+    <a href="#journal">Journal</a>
+  </div>
+  <div class="wrap sheet-foot">
+    <a class="btn btn-primary" href="#lien-he">Đặt lịch tư vấn</a>
+    <a class="btn btn-ghost" href="#lien-he">Nhắn Zalo</a>
+  </div>
+</div>
+
+<main>
+
+  <!-- 1. HERO -->
+  <section class="hero" id="hero">
+    <div class="wrap-wide">
+      <div class="shot shot-hero rv">
+        <div class="shot-label"><b>Hero — slide 1 / 3</b>Nữ executive trong vest may đo · cần bản ngang cho desktop và bản dọc riêng cho điện thoại</div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="hero-copy rv">
+        <div class="hero-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+        <h1>Phong thái được may đo riêng cho bạn.</h1>
+        <p class="lede">Vest và thời trang công sở được thiết kế theo vóc dáng, môi trường làm việc và hình ảnh bạn muốn thể hiện.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#lien-he">Đặt lịch tư vấn</a>
+          <a class="link" href="#nhom">Khám phá HAI Fashion <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. BA NHÓM KHÁCH HÀNG -->
+  <section id="nhom">
+    <div class="wrap">
+      <div class="head rv">
+        <p class="eyebrow">Ba nhóm khách hàng</p>
+        <h2>Bạn đang may cho một người, hay cho cả một đội ngũ?</h2>
+      </div>
+      <div class="grid g3">
+        <a class="acard rv" href="#">
+          <div class="shot shot-3x4"><div class="shot-label"><b>Nữ executive</b>Toàn thân hoặc 3/4 · trong môi trường làm việc</div></div>
+          <div class="acard-t">
+            <span class="acard-en">Executive Women</span>
+            <h3>Vest &amp; công sở nữ</h3>
+            <p class="small">May đo cho nữ quản lý, doanh nhân và chuyên gia — chú trọng vai, eo và tỷ lệ cơ thể.</p>
+            <span class="link" style="align-self:flex-start;margin-top:4px">Khám phá <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+        <a class="acard rv" href="#">
+          <div class="shot shot-3x4"><div class="shot-label"><b>Nam executive</b>Toàn thân hoặc 3/4 · trong môi trường làm việc</div></div>
+          <div class="acard-t">
+            <span class="acard-en">Executive Men</span>
+            <h3>Vest &amp; công sở nam</h3>
+            <p class="small">May đo cho nam quản lý và doanh nhân — tư vấn form theo môi trường sử dụng.</p>
+            <span class="link" style="align-self:flex-start;margin-top:4px">Khám phá <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+        <a class="acard rv" href="#doanhnghiep">
+          <div class="shot shot-3x4"><div class="shot-label"><b>Đội ngũ doanh nghiệp</b>Nhóm 4–8 người mặc đồng phục · ảnh thật tại công ty</div></div>
+          <div class="acard-t">
+            <span class="acard-en">Corporate Teams</span>
+            <h3>Đồng phục doanh nghiệp</h3>
+            <p class="small">Đồng bộ hình ảnh cho đội ngũ bán hàng, quản lý và nhân viên văn phòng.</p>
+            <span class="link" style="align-self:flex-start;margin-top:4px">Khám phá <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. WHY -->
+  <section class="tight">
+    <div class="wrap">
+      <div class="head rv">
+        <p class="eyebrow">Vì sao may đo</p>
+        <h2>Khác biệt nằm ở những chỗ khó nhìn thấy nhất.</h2>
+      </div>
+      <div class="why">
+        <div class="why-item rv">
+          <h3>May theo vóc dáng</h3>
+          <p class="body">Mỗi bộ trang phục được điều chỉnh dựa trên hình thể thực tế của người mặc, không theo bảng size chung.</p>
+        </div>
+        <div class="why-item rv">
+          <h3>Tư vấn theo môi trường sử dụng</h3>
+          <p class="body">Trang phục cho CEO, cho đội sales, cho quản lý, cho sự kiện hay cho môi trường văn phòng không nên giống nhau.</p>
+        </div>
+        <div class="why-item rv">
+          <h3>Chú trọng form dáng</h3>
+          <p class="body">Đặc biệt ở phần vai, eo, chiều dài áo và tỷ lệ cơ thể — những chỗ quyết định bộ đồ trông vừa hay không.</p>
+        </div>
+        <div class="why-item rv">
+          <h3>Cá nhân hóa</h3>
+          <p class="body">Khách hàng chọn phong cách, chất liệu và các chi tiết hoàn thiện theo ý mình.</p>
+        </div>
+        <div class="why-item rv">
+          <h3>Dịch vụ doanh nghiệp</h3>
+          <p class="body">Triển khai đồng bộ hình ảnh cho cả đội ngũ, từ lãnh đạo tới nhân viên.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. KHÁCH HÀNG THẬT -->
+  <section id="khach-hang">
+    <div class="wrap">
+      <div class="head-row rv">
+        <div class="head">
+          <p class="eyebrow">HAI Fashion in real life</p>
+          <h2>Khách hàng thật, trong công việc thật.</h2>
+          <p class="body">Không phải ảnh mẫu. Đây là những bộ đã được may và đang được mặc đi làm mỗi ngày.</p>
+        </div>
+        <a class="link" href="#">Xem thêm khách hàng <span aria-hidden="true">→</span></a>
+      </div>
+
+      <div style="margin-bottom:22px" class="rv">
+        <span class="todo">TODO — cần xin phép từng khách trước khi đăng ảnh, tên, chức danh, tên công ty</span>
+      </div>
+
+      <div class="rail">
+        <article class="ccard rv">
+          <div class="shot shot-4x5"><div class="shot-label"><b>Case 01</b>Khách nữ · vest công sở</div></div>
+          <div class="ccard-meta">
+            <span class="ccard-ctx">Họp lãnh đạo</span>
+            <span class="ccard-type">Vest nữ 2 khuy, ve nhọn</span>
+            <p class="small">Dáng ôm nhẹ ở eo, chiều dài áo canh theo tỷ lệ người mặc.</p>
+          </div>
+        </article>
+        <article class="ccard rv">
+          <div class="shot shot-4x5"><div class="shot-label"><b>Case 02</b>Khách nam · vest công sở</div></div>
+          <div class="ccard-meta">
+            <span class="ccard-ctx">Gặp đối tác</span>
+            <span class="ccard-type">Suit nam single-breasted</span>
+            <p class="small">Vai canh theo độ xuôi vai thật, không dùng đệm vai cứng.</p>
+          </div>
+        </article>
+        <article class="ccard rv">
+          <div class="shot shot-4x5"><div class="shot-label"><b>Case 03</b>Đội ngũ doanh nghiệp</div></div>
+          <div class="ccard-meta">
+            <span class="ccard-ctx">Đội ngũ bán hàng</span>
+            <span class="ccard-type">Đồng phục vest công ty</span>
+            <p class="small">Cùng một thiết kế, cắt riêng theo số đo từng người.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. DOANH NGHIỆP -->
+  <section class="band" id="doanhnghiep">
+    <div class="wrap">
+      <div class="grid g2" style="align-items:center">
+        <div class="rv">
+          <div class="shot shot-3x4"><div class="shot-label"><b>Đội ngũ doanh nghiệp</b>Ảnh nhóm tại văn phòng khách hàng · ngang hoặc dọc</div></div>
+        </div>
+        <div class="rv" style="display:flex;flex-direction:column;gap:22px">
+          <p class="eyebrow">Corporate Tailoring</p>
+          <h2>Một đội ngũ. Một hình ảnh chuyên nghiệp.</h2>
+          <p class="body">Đồng phục công sở không chỉ là mặc giống nhau. Cùng một thiết kế nhưng cắt theo số đo từng người — để cả đội trông đồng bộ mà ai cũng vừa vặn.</p>
+
+          <hr class="rule">
+
+          <div class="steps" style="grid-template-columns:1fr">
+            <div class="step"><span class="num">01</span><span class="step-name">Tìm hiểu thương hiệu và nhu cầu</span></div>
+            <div class="step"><span class="num">02</span><span class="step-name">Đề xuất thiết kế</span></div>
+            <div class="step"><span class="num">03</span><span class="step-name">Chọn chất liệu</span></div>
+            <div class="step"><span class="num">04</span><span class="step-name">Lấy số đo</span></div>
+            <div class="step"><span class="num">05</span><span class="step-name">May mẫu</span></div>
+            <div class="step"><span class="num">06</span><span class="step-name">Sản xuất</span></div>
+            <div class="step"><span class="num">07</span><span class="step-name">Thử và điều chỉnh</span></div>
+            <div class="step"><span class="num">08</span><span class="step-name">Bàn giao</span></div>
+          </div>
+
+          <a class="btn btn-on-dark" href="#lien-he" style="align-self:flex-start">Tư vấn đồng phục doanh nghiệp</a>
+          <span class="todo">TODO — thời gian mỗi bước &amp; số lượng tối thiểu: chờ HAI Fashion xác nhận</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. QUY TRÌNH MAY ĐO -->
+  <section id="quy-trinh">
+    <div class="wrap">
+      <div class="head rv">
+        <p class="eyebrow">Quy trình may đo cá nhân</p>
+        <h2>Bảy bước, từ lần gặp đầu tiên đến lúc nhận đồ.</h2>
+      </div>
+      <div class="steps rv">
+        <div class="step"><span class="num">01</span><span class="step-name">Tư vấn phong cách</span></div>
+        <div class="step"><span class="num">02</span><span class="step-name">Chọn chất liệu</span></div>
+        <div class="step"><span class="num">03</span><span class="step-name">Lấy số đo</span></div>
+        <div class="step"><span class="num">04</span><span class="step-name">Thiết kế form</span></div>
+        <div class="step"><span class="num">05</span><span class="step-name">May và hoàn thiện</span></div>
+        <div class="step"><span class="num">06</span><span class="step-name">Thử &amp; chỉnh sửa</span></div>
+        <div class="step"><span class="num">07</span><span class="step-name">Nhận sản phẩm</span></div>
+      </div>
+      <div style="margin-top:26px" class="rv">
+        <span class="todo">TODO — chưa ghi thời gian bất kỳ bước nào cho tới khi có số liệu thật</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. TAY NGHỀ -->
+  <section id="tay-nghe" class="tight">
+    <div class="wrap">
+      <div class="head-row rv">
+        <div class="head">
+          <p class="eyebrow">Chất liệu &amp; tay nghề</p>
+          <h2>Giá trị của một bộ may đo nằm ở bốn chỗ.</h2>
+        </div>
+        <a class="link" href="#">Tìm hiểu tay nghề <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="grid g4">
+        <div class="rv" style="display:flex;flex-direction:column;gap:13px">
+          <div class="shot shot-1x1"><div class="shot-label"><b>Macro</b>Bề mặt vải, thấy sợi</div></div>
+          <h3>Chất liệu</h3>
+          <p class="small">Chọn theo khí hậu và tần suất mặc, không chỉ theo màu.</p>
+        </div>
+        <div class="rv" style="display:flex;flex-direction:column;gap:13px">
+          <div class="shot shot-1x1"><div class="shot-label"><b>Macro</b>Vai áo &amp; lớp lót</div></div>
+          <h3>Cấu trúc</h3>
+          <p class="small">Phần dựng bên trong quyết định áo giữ form được bao lâu.</p>
+        </div>
+        <div class="rv" style="display:flex;flex-direction:column;gap:13px">
+          <div class="shot shot-1x1"><div class="shot-label"><b>Macro</b>Đường ly, phom eo</div></div>
+          <h3>Form dáng</h3>
+          <p class="small">Vai, eo, chiều dài áo — ba chỗ dễ nhìn ra nhất là may đo hay may sẵn.</p>
+        </div>
+        <div class="rv" style="display:flex;flex-direction:column;gap:13px">
+          <div class="shot shot-1x1"><div class="shot-label"><b>Macro</b>Khuy, ve áo, đường chỉ</div></div>
+          <h3>Chi tiết</h3>
+          <p class="small">Khuy, ve, đường chỉ tay — nơi khách chọn được cá tính riêng.</p>
+        </div>
+      </div>
+      <div style="margin-top:26px" class="rv">
+        <span class="todo">TODO — không nêu tên thương hiệu vải cho tới khi HAI Fashion xác nhận</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. PORTFOLIO -->
+  <section id="portfolio">
+    <div class="wrap">
+      <div class="head-row rv">
+        <div class="head">
+          <p class="eyebrow">Bộ sưu tập</p>
+          <h2>Những thiết kế đã hoàn thiện.</h2>
+        </div>
+        <a class="link" href="#">Xem toàn bộ <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="tabs rv" role="tablist" aria-label="Lọc bộ sưu tập">
+        <button class="tab" role="tab" aria-selected="true">Tất cả</button>
+        <button class="tab" role="tab" aria-selected="false">Nữ</button>
+        <button class="tab" role="tab" aria-selected="false">Nam</button>
+        <button class="tab" role="tab" aria-selected="false">Doanh nghiệp</button>
+      </div>
+      <div class="rail">
+        <div class="shot shot-3x4 rv"><div class="shot-label"><b>Nữ</b>Women's suit</div></div>
+        <div class="shot shot-3x4 rv"><div class="shot-label"><b>Nữ</b>Blazer</div></div>
+        <div class="shot shot-3x4 rv"><div class="shot-label"><b>Nam</b>Suit</div></div>
+        <div class="shot shot-3x4 rv"><div class="shot-label"><b>Doanh nghiệp</b>Office uniform</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. JOURNAL -->
+  <section id="journal" class="tight">
+    <div class="wrap">
+      <div class="head-row rv">
+        <div class="head">
+          <p class="eyebrow">Journal</p>
+          <h2>Những câu hỏi khách hay hỏi nhất.</h2>
+        </div>
+        <a class="link" href="#">Đọc thêm <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="grid g3">
+        <a class="jcard rv" href="#">
+          <div class="shot shot-3x2"><div class="shot-label"><b>Ảnh bài viết</b>3:2</div></div>
+          <span class="jcat">Style Guide</span>
+          <h3>Vest nữ công sở nên chọn form nào?</h3>
+          <p class="small">Ba dáng phổ biến và ai hợp dáng nào.</p>
+        </a>
+        <a class="jcard rv" href="#">
+          <div class="shot shot-3x2"><div class="shot-label"><b>Ảnh bài viết</b>3:2</div></div>
+          <span class="jcat">Kiến thức may đo</span>
+          <h3>Suit may đo khác suit may sẵn như thế nào?</h3>
+          <p class="small">Nhìn vào đâu để biết một bộ được cắt riêng.</p>
+        </a>
+        <a class="jcard rv" href="#">
+          <div class="shot shot-3x2"><div class="shot-label"><b>Ảnh bài viết</b>3:2</div></div>
+          <span class="jcat">Đồng phục doanh nghiệp</span>
+          <h3>Cách xây dựng đồng phục cho đội sales</h3>
+          <p class="small">Bắt đầu từ nhận diện thương hiệu, không phải từ mẫu áo.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. CTA -->
+  <section class="band" id="lien-he">
+    <div class="wrap">
+      <div class="close-in rv">
+        <p class="eyebrow">Bắt đầu</p>
+        <h2>Bắt đầu bằng một buổi tư vấn.</h2>
+        <p class="body">Gặp trực tiếp tại 389B Cách Mạng Tháng Tám, Hòa Hưng, TP.HCM — hoặc nhắn trước để hẹn giờ.</p>
+        <div class="close-actions">
+          <a class="btn btn-on-dark" href="#">Đặt lịch tư vấn</a>
+          <a class="btn btn-ghost-on-dark" href="#">Nhắn Zalo</a>
+        </div>
+        <span class="todo">TODO — số điện thoại, link Zalo, giờ mở cửa: chờ HAI Fashion cung cấp</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft-grid">
+      <div class="ft-col">
+        <span class="brand" style="margin-bottom:6px">HAI Fashion</span>
+        <p class="small" style="max-width:34ch">May đo phong thái chuyên nghiệp cho cá nhân và doanh nghiệp.</p>
+        <p class="small">389B Cách Mạng Tháng Tám<br>Hòa Hưng, TP.HCM</p>
+      </div>
+      <div class="ft-col">
+        <h4>Dịch vụ</h4>
+        <a href="#nhom">Nữ</a><a href="#nhom">Nam</a><a href="#doanhnghiep">Doanh nghiệp</a><a href="#portfolio">Bộ sưu tập</a>
+      </div>
+      <div class="ft-col">
+        <h4>Tìm hiểu</h4>
+        <a href="#tay-nghe">Tay nghề</a><a href="#quy-trinh">Quy trình may đo</a><a href="#journal">Journal</a><a href="#">Về HAI Fashion</a>
+      </div>
+      <div class="ft-col">
+        <h4>Liên hệ</h4>
+        <span class="todo">TODO — điện thoại</span>
+        <span class="todo">TODO — Zalo</span>
+        <span class="todo">TODO — giờ mở cửa</span>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <p class="small">© HAI Fashion</p>
+      <p class="small">Bản dựng giao diện — chưa phải website chính thức</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var burger = document.getElementById('burger');
+  var sheet  = document.getElementById('sheet');
+  var close  = document.getElementById('sheet-close');
+
+  function setSheet(open){
+    sheet.setAttribute('data-open', open ? 'true' : 'false');
+    sheet.setAttribute('aria-hidden', open ? 'false' : 'true');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  burger.addEventListener('click', function(){ setSheet(sheet.getAttribute('data-open') !== 'true'); });
+  close.addEventListener('click', function(){ setSheet(false); });
+  sheet.querySelectorAll('.sheet-nav a, .sheet-foot a').forEach(function(a){
+    a.addEventListener('click', function(){ setSheet(false); });
+  });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') setSheet(false); });
+
+  var tabs = document.querySelectorAll('.tab');
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){
+      tabs.forEach(function(x){ x.setAttribute('aria-selected','false'); });
+      t.setAttribute('aria-selected','true');
+    });
+  });
+
+  var items = document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    items.forEach(function(el){ el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function(el){ io.observe(el); });
+})();
+</script>
